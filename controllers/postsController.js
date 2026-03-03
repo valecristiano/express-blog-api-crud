@@ -3,8 +3,32 @@ let postsData = require("../data/postsData");
 //index
 function index(req, res) {
   console.log("Read all elements");
+
+  let filteredposts = [...postsData];
+
+  const filterTagvalue = req.query.search;
+  console.log(filterTagvalue);
+  //filtro tag
+  if (filterTagvalue) {
+    filteredposts = filteredposts.filter((post) => {
+      const normalizedValue = filterTagvalue.toLowerCase().trim();
+      return post.tags.some((tag) => tag.toLowerCase().trim().includes(normalizedValue));
+    });
+  }
+  //filtro title
+  const filterTitlevalue = req.query.query;
+  console.log(filterTitlevalue);
+
+  if (filterTitlevalue) {
+    filteredposts = filteredposts.filter((post) => {
+      const normalizedValue = filterTitlevalue.toLowerCase().trim();
+      const normalizedTitle = post.title.toLowerCase().trim();
+      return normalizedTitle.includes(normalizedValue) || post.tags.some((tag) => tag.toLowerCase().trim().includes(normalizedValue));
+    });
+  }
+
   const responseData = {
-    result: postsData,
+    result: filteredposts,
     success: true,
   };
   res.json(responseData);
@@ -21,7 +45,7 @@ function show(req, res) {
       result: `Blog post with id: ${postId} not found`,
       success: false,
     };
-    res.status(404).json(responseData);
+    return res.status(404).json(responseData);
   }
 
   const responseData = {
@@ -72,7 +96,7 @@ function destroy(req, res) {
       result: `Blog post with id: ${postId} not found`,
       success: false,
     };
-    res.status(404).json(responseData);
+    return res.status(404).json(responseData);
   }
   postsData = postsData.filter((post) => post.id !== postId);
 
