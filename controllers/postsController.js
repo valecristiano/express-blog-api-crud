@@ -81,16 +81,37 @@ function store(req, res) {
   };
   console.log(postsData);
 
-  res.json(responseData);
+  res.status(201).json(responseData);
 }
 
 //Update
 function update(req, res) {
   console.log(`Update element with id:${req.params.id} `);
+
+  const postId = parseInt(req.params.id);
+  const post = postsData.find((post) => post.id === postId);
+
+  if (!post) {
+    const responseData = {
+      result: `Blog post with id: ${postId} not found`,
+      success: false,
+    };
+    return res.status(404).json(responseData);
+  }
+
+  post.title = req.body.title;
+  post.content = req.body.content;
+  post.image = req.body.image;
+  post.tags = req.body.tags;
+
   const responseData = {
     result: "Element updated",
     success: true,
+    newpost: post,
   };
+
+  console.log(postsData);
+
   res.json(responseData);
 }
 
