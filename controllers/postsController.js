@@ -55,9 +55,10 @@ function show(req, res) {
   res.json(responseData);
 }
 
-//Create
-function create(req, res) {
+//Store
+function store(req, res) {
   console.log("Create new element");
+  console.log(req.body);
   const responseData = {
     result: "New element created",
     success: true,
@@ -111,4 +112,4 @@ function destroy(req, res) {
   res.json(responseData);
 }
 
-module.exports = { index, show, create, update, modify, destroy };
+module.exports = { index, show, store, update, modify, destroy };
