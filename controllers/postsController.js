@@ -59,10 +59,28 @@ function show(req, res) {
 function store(req, res) {
   console.log("Create new element");
   console.log(req.body);
+
+  const newId = postsData[postsData.length - 1].id + 1;
+
+  const { title, content, image, tags } = req.body;
+
+  const newPost = {
+    id: newId,
+    title,
+    content,
+    image,
+    tags,
+  };
+
+  postsData.push(newPost);
+
   const responseData = {
     result: "New element created",
     success: true,
+    message: newPost,
   };
+  console.log(postsData);
+
   res.json(responseData);
 }
 
