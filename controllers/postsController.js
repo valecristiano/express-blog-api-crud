@@ -118,10 +118,31 @@ function update(req, res) {
 //Modify
 function modify(req, res) {
   console.log(`Modify element with id:${req.params.id} `);
+
+  const postId = parseInt(req.params.id);
+  const post = postsData.find((post) => post.id === postId);
+
+  if (!post) {
+    const responseData = {
+      result: `Blog post with id: ${postId} not found`,
+      success: false,
+    };
+    return res.status(404).json(responseData);
+  }
+
+  if (req.body.title) post.title = req.body.title;
+  if (req.body.content) post.content = req.body.content;
+  if (req.body.image) post.image = req.body.image;
+  if (req.body.tags) post.tags = req.body.tags;
+
   const responseData = {
     result: "element modified",
     success: true,
+    update: post,
   };
+
+  console.log(postsData);
+
   res.json(responseData);
 }
 
