@@ -2,6 +2,9 @@ let postsData = require("../data/postsData");
 
 //index
 function index(req, res) {
+  //prova errore 500:
+  // console.log(a.b);
+
   console.log("Read all elements");
 
   let filteredposts = [...postsData];
